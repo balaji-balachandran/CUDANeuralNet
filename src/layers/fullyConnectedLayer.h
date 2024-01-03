@@ -1,5 +1,5 @@
 #pragma once 
-#include "layer.h"
+#include "./../base-layer/layer.h"
 #include <iostream>
 
 class FullyConnectedLayer : public Layer { 
