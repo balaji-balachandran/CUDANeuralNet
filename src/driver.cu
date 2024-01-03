@@ -1,5 +1,5 @@
 #include <iostream>
-#include "./layers/fullyConnectedLayer.h"
+#include "./layers/fully_connected_layer.h"
 
 int main(){
     FullyConnectedLayer first = FullyConnectedLayer(60, 200);
