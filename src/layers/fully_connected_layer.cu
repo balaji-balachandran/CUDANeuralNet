@@ -1,4 +1,4 @@
-#include "fullyConnectedLayer.h"
+#include "fully_connected_layer.h"
 
 void FullyConnectedLayer::Forward(){
     std::cout << "Forward" << std::endl;

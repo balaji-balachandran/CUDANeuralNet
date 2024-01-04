@@ -4,7 +4,7 @@
 
 class ReLU : public Layer { 
     public: 
-        ReLU(unsigned int inputSize, unsigned int outputSize) : Layer(inputSize, outputSize) { };
+        ReLU(unsigned int size) : Layer(size, size) { };
         void Forward();
         void Backward();
 
