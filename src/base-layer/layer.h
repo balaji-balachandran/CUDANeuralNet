@@ -8,10 +8,14 @@ class Layer {
         unsigned int GetOutputSize() { return output_size_; }
         bool GetParallelized() { return is_parallelized_; }
 
-        virtual void Forward() = 0;
-        virtual void Backward() = 0;
+        // Calculates the forward propagation of each layer 
+        virtual float* Forward() = 0;
+
+        // Calculates the gradient vector and update weights accordingly
+        virtual float* Backward() = 0;
+
     private:
         unsigned int input_size_;
         unsigned int output_size_;
         bool is_parallelized_;
-};
+}; 

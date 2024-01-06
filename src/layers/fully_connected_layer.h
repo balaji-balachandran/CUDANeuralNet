@@ -5,8 +5,8 @@
 class FullyConnectedLayer : public Layer { 
     public: 
         FullyConnectedLayer(unsigned int inputSize, unsigned int outputSize, bool is_parallelized);
-        void Forward();
-        void Backward();
+        float* Forward();
+        float* Backward();
     
     private:
         float* weights_;
