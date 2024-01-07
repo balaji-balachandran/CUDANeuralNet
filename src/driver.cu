@@ -4,14 +4,29 @@
 #include <sstream>
 
 int main(){
-    FullyConnectedLayer first = FullyConnectedLayer(60, 200);
 
-    std::stringstream ss;
-    ss << "Mismatched dimensions at Layer " << 12 
-        << " (Actual Input Size was " << 150 
-        << ", expected " << 200 << ")";
+    float* input_data = new float[3];
+    for(int i = 0; i < 3; i++){
+        input_data[i] = 0.1;
+    }
+
+    FullyConnectedLayer first =    FullyConnectedLayer(3, 4, false);
+
+    float* output = first.Forward(input_data);
+    for(int i = 0; i < first.GetOutputSize(); i++){
+        std::cout << output[i] << std::endl;
+    }
+
+    // [3, 6, 9, 12]
+    float* d_error = new float[4];
+    for(int i = 0; i < 4; i++){
+        d_error[i] = 3 * (i + 1);
+    }
+
+    float* d_error_input = first.Backward(d_error);
+    for(int i = 0; i < 3; i++){
+        std::cout <<  d_error_input[i] << std::endl;
+    }
     
-    std::cout << ss.str() << std::endl;
 
-    std::cout << first.getInputSize() << std::endl;
 }
