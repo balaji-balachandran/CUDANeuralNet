@@ -5,7 +5,7 @@
 
 class FullyConnectedLayer : public Layer { 
     public: 
-        FullyConnectedLayer(unsigned int inputSize, unsigned int outputSize, bool is_parallelized);
+        FullyConnectedLayer(unsigned int input_size, unsigned int output_size, bool is_parallelized);
         float* Forward(float* input_data);
         float* SequentialForward(float* input_data);
         float* ParallelizedForward(float* input_data);

@@ -33,7 +33,7 @@ float* ReLU::Backward(float* d_error_d_output){
 float* ReLU::SequentialBackward(float* d_error_d_output){
     float* d_error_d_input = new float[input_size_];
     for(size_t i = 0; i < input_size_; i++){
-        d_error_d_input[i] = input_[i] > 0 ? d_error_d_output : 0;
+        d_error_d_input[i] = input_[i] > 0 ? d_error_d_output[i] : 0;
     }
     return d_error_d_input;
 }

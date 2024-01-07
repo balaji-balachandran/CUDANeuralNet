@@ -4,7 +4,7 @@
 
 class ReLU : public Layer { 
     public: 
-        ReLU(unsigned int size) : Layer(size, size) { };
+        ReLU(unsigned int size, bool is_parallelized) : Layer(size, size, is_parallelized) { };
         float* Forward(float* input_data);
         float* SequentialForward(float* input_data);
         float* ParallelizedForward(float* input_data);
