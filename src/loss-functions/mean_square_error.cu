@@ -12,7 +12,8 @@ float MeanSquaredError::GetLoss(float* y_true, float* y_predicted){
 float* MeanSquaredError::GetGradient(float* y_true, float* y_predicted){
     float* error_gradient = new float[num_classes_];
     for(size_t i = 0; i < num_classes_; i++){
-        error_gradient[i] = 2 / num_classes_ * (y_true[i] - y_predicted[i]);
+        // cast to float to avoid integer division
+        error_gradient[i] = 2 * (y_true[i] - y_predicted[i]) / num_classes_;
     }
 
     return error_gradient;
