@@ -4,34 +4,82 @@
 #include "./exceptions/layer_exception.cu"
 #include "./loss-functions/mean_square_error.cu"
 #include "./activation-functions/softmax.cu"
+#include "./data-loader/data_loader.cu"
+#include "./neural_net.cu"
 #include <sstream>
 
 int main(){
 
-    float* input_data = new float[3];
-    input_data[0] = 1;
-    input_data[1] = 3;
-    input_data[2] = 2;
+    // float* input_data = new float[3];
+    // input_data[0] = 1;
+    // input_data[1] = 3;
+    // input_data[2] = 2;
 
-    Softmax layer = Softmax(3, false);
-    float* layer_output = layer.Forward(input_data);
-    float* error = new float[3];
-    error[0] = 1;
-    error[1] = 0.5;
-    error[2] = 0.8;
+    // Softmax layer = Softmax(3, false);
+    // float* layer_output = layer.Forward(input_data);
+    // float* error = new float[3];
+    // error[0] = 1;
+    // error[1] = 0.5;
+    // error[2] = 0.8;
 
 
-    float* d_error_d_inp = layer.Backward(error);
-    for(size_t i = 0; i < 3; i++){
-        std::cout << d_error_d_inp[i] << std::endl;
+    // float* d_error_d_inp = layer.Backward(error);
+    // for(size_t i = 0; i < 3; i++){
+    //     std::cout << d_error_d_inp[i] << std::endl;
+    // }
+
+
+    DataLoader reader = DataLoader();
+    auto data = reader.ReadCSV("./data/mnist_train.csv");
+    std::cout << data.size() << std::endl;
+    std::cout << data[0].size() << std::endl;
+    const int INPUT_SIZE  = 784;
+    const int NUM_CLASSES = 10;
+    NeuralNet model(INPUT_SIZE, NUM_CLASSES);
+
+    Layer* first_hidden_layer = new FullyConnectedLayer(784, 10, false);
+    Layer* first_activation_function = new ReLU(10, false);
+    Layer* second_hidden_layer = new FullyConnectedLayer(10, 10, false);
+    Layer* softmax = new Softmax(10, false);
+
+    model.AddLayer(first_hidden_layer);
+    model.AddLayer(first_activation_function);
+    model.AddLayer(second_hidden_layer);
+    model.AddLayer(softmax);
+
+    LossFunction* loss_fn = new MeanSquaredError(NUM_CLASSES);
+    model.SetLossFunction(loss_fn);
+
+    float* x = new float[INPUT_SIZE];
+    for(int j = 0; j < data.size(); j++){
+        auto row = data[j];
+        int true_value = std::stoi(row[0]);
+        for(int i = 1; i < row.size(); i++){
+            x[i - 1] = std::stoi(row[i]) / 255;
+        }
+
+        float* y_predicted = model.ForwardPropogation(x);
+        float predicted = 0;
+        float predicted_prob = y_predicted[0];
+        for(int i = 1; i < NUM_CLASSES; i++){
+            if(y_predicted[i] > predicted_prob){
+                predicted_prob = y_predicted[i];
+                predicted = i;
+            }
+            std::cout << y_predicted[i] << std::endl;
+        }
+        std::cout << "Predicted " << predicted << " with probability "
+        << predicted_prob << ", actual " << true_value << std::endl;
+        float* error = model.GetLossGradient(y_predicted, true_value);
+        for(int i = 0; i < 10; i++){
+            std::cout << error[i] << std::endl;
+        }
+        model.BackwardPropogation(error);
+        
     }
-    // NeuralNet model(784, 10);
-    // Layer* first_hidden_layer = new FullyConnectedLayer(784, 10, false);
-    // Layer* first_activation_function = new ReLU(10, false);
-    // Layer* second_hidden_layer = new FullyConnectedLayer(10, 10, false);
-    // Layer* second_activation_function = new ReLU(10, false);
-
-    // model.AddLayer
+    
+    std::cout << "GOT HERE" << std::endl;
+    delete[] x;
 
     // float* input_data = new float[3];
     // for(int i = 0; i < 3; i++){

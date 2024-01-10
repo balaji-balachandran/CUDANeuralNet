@@ -11,15 +11,23 @@ float* Softmax::Forward(float* input_data){
 float* Softmax::SequentialForward(float* input_data){
     float* layer_output = new float[output_size_];
     float normalizer = 0;
-    for(size_t i = 0; i < input_size_; i++){
-        normalizer += std::exp(input_data[i]);
+    float max_value = input_data[0];
+    for(size_t i = 1; i < input_size_; i++){
+        if(input_data[i] > max_value){
+            max_value = input_data[i];
+        }
     }
 
     for(size_t i = 0; i < input_size_; i++){
-        layer_output[i] = std::exp(input_data[i]) / normalizer;
+        normalizer += std::exp(input_data[i] - max_value);
+    }
+
+    for(size_t i = 0; i < input_size_; i++){
+        layer_output[i] = std::exp(input_data[i] - max_value) / normalizer;
     }
     
     return layer_output;
+
 }
 
 float* Softmax::ParallelizedForward(float* input_data){
@@ -36,13 +44,20 @@ float* Softmax::Backward(float* d_error_d_output){
 float* Softmax::SequentialBackward(float* d_error_d_output){
     float* d_error_d_input = new float[input_size_];
     
+    float max_value = input_[0];
+    for(size_t i = 1; i < input_size_; i++){
+        if(input_[i] > max_value){
+            max_value = input_[i];
+        }
+    }
+
     float normalizer = 0;
     for(size_t i = 0; i < input_size_; i++){
-        normalizer += std::exp(input_[i]);
+        normalizer += std::exp(input_[i] - max_value);
     }
 
     for(size_t i = 0; i < input_size_; i++){
-        float softmax_input = std::exp(input_[i]) / normalizer;
+        float softmax_input = std::exp(input_[i] - max_value) / normalizer;
         d_error_d_input[i] = d_error_d_output[i] * softmax_input * (1 - softmax_input);
     }
 

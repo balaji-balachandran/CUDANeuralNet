@@ -13,20 +13,20 @@ FullyConnectedLayer::FullyConnectedLayer(unsigned int input_size, unsigned outpu
         std::uniform_real_distribution<> distribution(-0.5, 0.5);
 
         // Random generation of weights and biases
-        // for(int j = 0; j < output_size_; j++){
-        //     for(int i = 0; i < input_size_; i++){
-        //         weights_[i * 4 + j] = distribution(gen);
-        //     }
-        //     biases_[j] = distribution(gen);
-        // }
-
-        // TESTING ONLY
         for(int j = 0; j < output_size_; j++){
             for(int i = 0; i < input_size_; i++){
-                weights_[i * 4 + j] = i * 4 + j;
+                weights_[i * output_size_ + j] = distribution(gen);
             }
-            biases_[j] = 2 * j;
+            biases_[j] = distribution(gen);
         }
+
+        // TESTING ONLY
+        // for(int j = 0; j < output_size_; j++){
+        //     for(int i = 0; i < input_size_; i++){
+        //         weights_[i * 4 + j] = i * 4 + j;
+        //     }
+        //     biases_[j] = 2 * j;
+        // }
     } 
 
 float* FullyConnectedLayer::Forward(float* input_data){
@@ -104,4 +104,9 @@ float* FullyConnectedLayer::SequentialBackward(float* d_error_d_output){
 
 float* FullyConnectedLayer::ParallelizedBackward(float* d_error_d_output){
     return nullptr;
+}
+
+FullyConnectedLayer::~FullyConnectedLayer(){
+    delete[] weights_;
+    delete[] biases_;
 }
