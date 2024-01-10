@@ -8,11 +8,13 @@
 class NeuralNet {
     public:
         NeuralNet(unsigned int input_size, unsigned int output_size);
-        NeuralNet(std::vector<Layer*> layers);
+        NeuralNet(unsigned int input_size, unsigned int output_size, std::vector<Layer*> layers);
         void AddLayer(Layer* layer);
         void SetLossFunction(LossFunction* loss_function);
-        void ForwardPropogation();
-        void BackwardPropogation();
+        float* ForwardPropogation(float* x);
+        float* GetLossGradient(float* y_predicted, int true_value);
+        void BackwardPropogation(float* error);
+        
 
     private:
         std::vector<Layer*> layers_;

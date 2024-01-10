@@ -15,7 +15,8 @@ class FullyConnectedLayer : public Layer {
         float* ParallelizedBackward(float* d_error_d_output);
 
         float  GetWeight(size_t i, size_t j);
-    
+        ~FullyConnectedLayer();
+
     private:
         // n x m matrix where n = input_size and m = output_size 
         float* weights_;
