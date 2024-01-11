@@ -31,3 +31,4 @@ Or simply compile and execute in one step with
 (Note: In case of compilation error, if an *output.exe* file already exists, ***the previous output.exe file will (dubiously) be executed following the output of compilation errors when using the single step compile and run method***)
 
 ---
+### On Mac
