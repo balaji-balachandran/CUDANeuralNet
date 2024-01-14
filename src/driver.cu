@@ -53,13 +53,13 @@ int main(){
     float* x = new float[INPUT_SIZE];
     for(int j = 0; j < data.size(); j++){
 
-        for(int a = 0; a < 28; a++){
-            for(int b = 0; b < 28; b++){
-                int out = std::stoi(data[j][a * 28 + b + 1]) > 0;
-                std::cout << out;
-            }
-            std::cout << std::endl;
-        }
+        // for(int a = 0; a < 28; a++){
+        //     for(int b = 0; b < 28; b++){
+        //         int out = std::stoi(data[j][a * 28 + b + 1]) > 0;
+        //         std::cout << out;
+        //     }
+        //     std::cout << std::endl;
+        // }
         auto row = data[j];
         int true_value = std::stoi(row[0]);
         for(int i = 1; i < row.size(); i++){
