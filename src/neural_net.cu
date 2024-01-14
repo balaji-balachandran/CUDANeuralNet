@@ -53,14 +53,11 @@ float* NeuralNet::ForwardPropogation(float* x){
 
 float* NeuralNet::GetLossGradient(float* y_predicted, int true_value){
     
-    std::cout << "Error: " << loss_function_->GetLoss(y_predicted, true_value) << std::endl;
     return loss_function_->GetGradient(y_predicted, true_value);
 }
 
 void NeuralNet::BackwardPropogation(float* error){
     for(int i = layers_.size() - 1; i >= 0; i--){
-        std::cout << "Trying back prop on layer " << i << std::endl;
         error = layers_[i]->Backward(error);
-        std::cout << "Back prop on layer " << i << std::endl;
     }
 }

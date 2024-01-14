@@ -19,7 +19,7 @@ FullyConnectedLayer::FullyConnectedLayer(unsigned int input_size, unsigned outpu
             }
             biases_[j] = distribution(gen);
         }
- W
+
     } 
 
 float* FullyConnectedLayer::Forward(float* input_data){
